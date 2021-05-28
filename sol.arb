@@ -1,0 +1,68 @@
+$min = 9999999999
+def find_shortest(node, edges, costs, guests_at, x, y, wt, visit)
+
+    if x == y
+        $min = wt if ($min > wt && visit == true)
+        return
+    end
+    i = 0
+    edges[x].each do |edge|
+        visited = false
+        visited = true if (guests_at.include? edge.to_s or visit)
+        find_shortest(node, edges, costs, guests_at, edge, y, wt+costs[x][i].to_i, visited)
+        i = i+1
+    end
+    return
+end
+
+#code addded start
+no_test_case = gets.chomp
+no_test_case = no_test_case.to_i
+output = []
+
+for t in 1..no_test_case do
+    #code addded end
+    n,m = gets.chomp.split(" ")
+    n = n.to_i
+    m = m.to_i
+
+    weights = []
+    for i in 0..m-1
+         weights << gets.chomp.split(" ")
+    end
+
+    guest_nodes = gets.chomp.to_i
+
+    guests_at = gets.chomp.split(" ")
+    x = guests_at[-2].to_i
+    y = guests_at[-1].to_i
+
+    guests_at = guests_at[0..-3]
+
+
+    node = []
+    edges = []
+    cost = []
+    weights.each do |weight|
+        node[weight[0].to_i] = weight[0].to_i
+        if edges[weight[0].to_i].nil?
+          edges[weight[0].to_i] = [weight[1].to_i]
+          cost[weight[0].to_i] = [weight[2].to_i]
+        else 
+           edges[weight[0].to_i] << weight[1].to_i
+           cost[weight[0].to_i] << weight[2].to_i
+        end
+    end
+    node = node[1..-1]
+
+    find_shortest(node, edges, cost, guests_at, x, y, 0, false)
+    output << $min
+    # puts($min)
+    
+#code addded start
+end
+# puts(output)
+output.each do |o|
+   puts(o)
+end
+#code addded start
